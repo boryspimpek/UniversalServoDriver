@@ -67,7 +67,7 @@ def move_servo(end_pos, steps=5, delay=0.01):
 def reset_to_initial():
     move_servo(initial_positions)
 
-def test_function():
+def test_servo():
     move_servo({1:100})
     time.sleep(2)
     move_servo({2:100, 3:90})

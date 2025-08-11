@@ -4,8 +4,7 @@ import main
 app = Flask(__name__)
 
 ACTIONS = {
-    'test_function': main.test_function,
-    'func1': main.func1
+    'test_servo': main.test_servo,
     # Add new actions here
 }
 
