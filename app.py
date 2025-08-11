@@ -1,13 +1,12 @@
 from flask import Flask, render_template, jsonify
-import main  # Twój istniejący plik servo.py
+import main  
 
 app = Flask(__name__)
 
-# Słownik mapujący nazwy akcji na funkcje ruchu
 ACTIONS = {
     'test_function': main.test_function,
     'func1': main.func1
-    # Dodaj nowe akcje tutaj: 'nazwa': servo.funkcja
+    # Add new actions here
 }
 
 @app.route('/')
