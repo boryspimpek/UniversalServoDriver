@@ -2,17 +2,14 @@ import socket
 import json
 import time
 
-# ZMIEŃ NA ADRES IP SWOJEGO ESP8266
 ESP_IP = "192.168.4.1"
 ESP_PORT = 8888
 
-# Pozycje początkowe serw
 initial_positions = {
     1: 90, 2: 90, 3: 90, 4: 90,
     11: 90, 12: 90, 13: 90, 14: 90
 }
 
-# Aktualne pozycje serw (inicjalizowane pozycjami początkowymi)
 current_positions = initial_positions.copy()
 
 trimm = {
@@ -29,7 +26,6 @@ trimm = {
 def set_servo(servos):
     global current_positions
     
-    # Dodaj trim do każdego kanału
     trimmed_servos = {}
     for channel, angle in servos.items():
         trimmed_servos[channel] = angle + trimm.get(channel, 0)
@@ -45,7 +41,6 @@ def set_servo(servos):
         response, _ = sock.recvfrom(1024)
         print(f"Odpowiedź: {response.decode()}")
         
-        # Zaktualizuj aktualne pozycje
         current_positions.update(servos)
         
     except Exception as e:
@@ -57,7 +52,6 @@ def move_servo(end_pos, steps=5, delay=0.01):
     global current_positions
     
     channels = end_pos.keys()
-    # Użyj aktualnych pozycji jako punkt startowy
     start_pos = {ch: current_positions.get(ch, initial_positions[ch]) for ch in channels}
     
     for step in range(1, steps + 1):
@@ -73,28 +67,14 @@ def move_servo(end_pos, steps=5, delay=0.01):
 def reset_to_initial():
     move_servo(initial_positions)
 
-def walk():
-    move_servo({1:90, 2:130, 3:120, 4:60, 11:130, 12:90, 13:60, 14:120})
-    time.sleep(0.5)
-
-    for i in range(5):
-        # Faza 1
-        move_servo({1:70, 2:110, 3:60, 11:110, 12:70, 14:60})
-        # Faza 2
-        move_servo({1:50, 2:90, 3:120, 11:90, 12:50, 14:120})
-        # Faza 3
-        move_servo({1:70, 2:110, 4:120, 11:110, 12:70, 13:120})
-        # Faza 4
-        move_servo({1:90, 2:130, 4:60, 11:130, 12:90, 13:60})
-    
-def test_servos():
+def test_function():
     move_servo({1:100})
     time.sleep(2)
-    move_servo({2:100})
+    move_servo({2:100, 3:90})
     time.sleep(2)
-    move_servo({3:100})
+    move_servo({3:100, 4:90})
     time.sleep(2)
-    move_servo({4:100})
+    move_servo({4:100, 5:90, 6:90})
     time.sleep(2)
     move_servo({11:100})
     time.sleep(2)
@@ -102,10 +82,5 @@ def test_servos():
     time.sleep(2)
     move_servo({13:100})
     time.sleep(2)
-    move_servo({14:100})
+    move_servo({1:90, 2:90, 3:90, 4:90, 11:90, 12:90, 13:90, 14:100})
     time.sleep(2)
-
-def test_function():
-    time.sleep(5)
-
-
